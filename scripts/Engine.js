@@ -47,12 +47,15 @@ Engine.prototype.handleControls = function(event) {
     else if (event.code == "ArrowRight") {
         this.moveRight();
     }
+    else if (event.code == "ArrowUp") {
+        this.rotate();
+    }
 };
 
 Engine.prototype.moveDown = function() {
     this.currentTime = 0;
-    if(this.board.canMoveFigureDown(this.currentFigure)){
-        this.board.moveFigureDown(this.currentFigure);
+    if(this.currentFigure.canMoveFigureDown(this.board)){
+        this.currentFigure.moveFigureDown(this.board);
     }
     else {
         this.currentFigure = this.board.initializeFigure();
@@ -60,15 +63,17 @@ Engine.prototype.moveDown = function() {
 };
 
 Engine.prototype.moveLeft = function() {
-    if(this.board.canMoveFigureLeft(this.currentFigure)){
-        this.currentTime = 0;
-        this.board.moveFigureLeft(this.currentFigure);
+    if(this.currentFigure.canMoveFigureLeft(this.board)){
+        this.currentFigure.moveFigureLeft(this.board);
     }
 };
 
 Engine.prototype.moveRight = function() {
-    if(this.board.canMoveFigureRight(this.currentFigure)){
-        this.currentTime = 0;
-        this.board.moveFigureRight(this.currentFigure);
+    if(this.currentFigure.canMoveFigureRight(this.board)){
+        this.currentFigure.moveFigureRight(this.board);
     }
+};
+
+Engine.prototype.rotate = function() {
+    this.currentFigure.rotate(this.board);
 };
