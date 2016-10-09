@@ -1,5 +1,5 @@
 function Square() {
-    Square.call();
+    Figure.call();
     this.blocks = parent.blocks;
     this.xCoordinate = parent.xCoordinate;
     this.yCoordinate = parent.yCoordinate;
