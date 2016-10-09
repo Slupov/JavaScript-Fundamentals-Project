@@ -14,15 +14,25 @@ Board.prototype.initializeBoard = function () {
 };
 
 Board.prototype.initializeFigure = function() {
-    let figure = new Square();
+    // let figure = new Square();
+    // figure.blocks[0].yCoordinate = 0;
+    // figure.blocks[0].xCoordinate = 4;
+    // figure.blocks[1].yCoordinate = 0;
+    // figure.blocks[1].xCoordinate = 5;
+    // figure.blocks[2].yCoordinate = 1;
+    // figure.blocks[2].xCoordinate = 4;
+    // figure.blocks[3].yCoordinate = 1;
+    // figure.blocks[3].xCoordinate = 5;
+    let figure = new Triangle();
     figure.blocks[0].yCoordinate = 0;
-    figure.blocks[0].xCoordinate = 4;
-    figure.blocks[1].yCoordinate = 0;
-    figure.blocks[1].xCoordinate = 5;
+    figure.blocks[0].xCoordinate = 5;
+    figure.blocks[1].yCoordinate = 1;
+    figure.blocks[1].xCoordinate = 4;
     figure.blocks[2].yCoordinate = 1;
-    figure.blocks[2].xCoordinate = 4;
+    figure.blocks[2].xCoordinate = 5;
     figure.blocks[3].yCoordinate = 1;
-    figure.blocks[3].xCoordinate = 5;
+    figure.blocks[3].xCoordinate = 6;
+
     this.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];
     this.matrix[figure.blocks[1].yCoordinate][figure.blocks[1].xCoordinate] = figure.blocks[1];
     this.matrix[figure.blocks[2].yCoordinate][figure.blocks[2].xCoordinate] = figure.blocks[2];
