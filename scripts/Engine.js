@@ -12,6 +12,8 @@ let Engine = function(renderer, board) {
     this.timeForMove = 1;
     this.currentTime = 0;
     this.lastFrameTime = 0;
+    this.animationTime = 0;
+    this.timeForAnimation = 0.5;
 
     window.addEventListener('keydown', this.handleControls.bind(this));
 };
@@ -24,31 +26,42 @@ Engine.prototype.main = function(time = 0) {
 
 Engine.prototype.update = function(time) {
     if(this.currentFigure == null){
-        this.currentFigure = this.board.initializeFigure();
+        this.initializeFigure();
     }
 
     if(this.lastFrameTime != 0) {
         let timeDifference = time - this.lastFrameTime;
-        this.currentTime += timeDifference;
-        if(this.currentTime / 1000 > this.timeForMove) {
-            this.moveDown();
+        if(this.board.playingAnimation == false) {
+            this.currentTime += timeDifference;
+            if(this.currentTime / 1000 > this.timeForMove) {
+                this.moveDown();
+            }
+        }
+        else {
+            this.animationTime += timeDifference;
+            if(this.animationTime / 1000 > this.timeForAnimation) {
+                this.animationTime = 0;
+                this.board.moveEverythingDown();
+            }
         }
     }
     this.lastFrameTime = time;
 };
 
 Engine.prototype.handleControls = function(event) {
-    if (event.code == "ArrowDown") {
-        this.moveDown();
-    }
-    else if (event.code == "ArrowLeft") {
-        this.moveLeft();
-    }
-    else if (event.code == "ArrowRight") {
-        this.moveRight();
-    }
-    else if (event.code == "ArrowUp") {
-        this.rotate();
+    if(this.canMove() == true) {
+        if (event.code == "ArrowDown") {
+            this.moveDown();
+        }
+        else if (event.code == "ArrowLeft") {
+            this.moveLeft();
+        }
+        else if (event.code == "ArrowRight") {
+            this.moveRight();
+        }
+        else if (event.code == "ArrowUp") {
+            this.rotate();
+        }
     }
 };
 
@@ -58,7 +71,10 @@ Engine.prototype.moveDown = function() {
         this.currentFigure.moveFigureDown(this.board);
     }
     else {
-        this.currentFigure = this.board.initializeFigure();
+        this.board.removeRows();
+        if(this.board.playingAnimation == false) {
+            this.initializeFigure();
+        }
     }
 };
 
@@ -76,4 +92,12 @@ Engine.prototype.moveRight = function() {
 
 Engine.prototype.rotate = function() {
     this.currentFigure.rotate(this.board);
+};
+
+Engine.prototype.initializeFigure = function() {
+    this.currentFigure = this.board.initializeFigure();
+};
+
+Engine.prototype.canMove = function() {
+    return this.board.playingAnimation == false;
 };

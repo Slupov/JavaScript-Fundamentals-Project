@@ -7,6 +7,12 @@ let Figure = function() {
 
 Figure.prototype.rotate = function (board) {};
 
+Figure.prototype.setNeighbours = function(block, neighbours) {
+    for(let i = 0; i < neighbours.length; i++) {
+        block.neighbours.push(this.blocks[neighbours[i]]);
+    }
+};
+
 Figure.prototype.canMoveFigureLeft = function(board) {
     let canMoveLeft = true;
     let leftBlocks = [];
