@@ -2,6 +2,7 @@ let FigureFactory = function (){};
 
 FigureFactory.prototype.initializeFigure = function (board){
     let figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1); // returns a random number between 1 and max
+    
     let figure = null;
     switch(figureNumber){
         case 1: {
