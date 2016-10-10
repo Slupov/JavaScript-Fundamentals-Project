@@ -41,11 +41,47 @@ FigureFactory.prototype.initializeFigure = function (board){
             break;
         }
         case 4: {
-            figure = new Triangle();
+            figure = new JBlock();
             figure.blocks[0].yCoordinate = 0;
             figure.blocks[0].xCoordinate = 5;
             figure.blocks[1].yCoordinate = 1;
+            figure.blocks[1].xCoordinate = 5;
+            figure.blocks[2].yCoordinate = 2;
+            figure.blocks[2].xCoordinate = 4;
+            figure.blocks[3].yCoordinate = 2;
+            figure.blocks[3].xCoordinate = 5;
+            break;
+        }
+        case 5: {
+            figure = new LBlock();
+            figure.blocks[0].yCoordinate = 0;
+            figure.blocks[0].xCoordinate = 4;
+            figure.blocks[1].yCoordinate = 1;
             figure.blocks[1].xCoordinate = 4;
+            figure.blocks[2].yCoordinate = 2;
+            figure.blocks[2].xCoordinate = 4;
+            figure.blocks[3].yCoordinate = 2;
+            figure.blocks[3].xCoordinate = 5;
+            break;
+        }
+        case 6: {
+            figure = new SBlock();
+            figure.blocks[0].yCoordinate = 0;
+            figure.blocks[0].xCoordinate = 5;
+            figure.blocks[1].yCoordinate = 0;
+            figure.blocks[1].xCoordinate = 6;
+            figure.blocks[2].yCoordinate = 1;
+            figure.blocks[2].xCoordinate = 4;
+            figure.blocks[3].yCoordinate = 1;
+            figure.blocks[3].xCoordinate = 5;
+            break;
+        }
+        case 7: {
+            figure = new ZBlock();
+            figure.blocks[0].yCoordinate = 0;
+            figure.blocks[0].xCoordinate = 4;
+            figure.blocks[1].yCoordinate = 0;
+            figure.blocks[1].xCoordinate = 5;
             figure.blocks[2].yCoordinate = 1;
             figure.blocks[2].xCoordinate = 5;
             figure.blocks[3].yCoordinate = 1;
