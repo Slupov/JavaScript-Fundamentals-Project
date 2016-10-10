@@ -13,6 +13,7 @@ const ORANGE_BLOCK_LOCATION = "images/Orange block.png";
 const TEAL_BLOCK_LOCATION = "images/Teal block.png";
 const GRAY_BLOCK_LOCATION = "images/Gray block.png";
 const YELLOW_BLOCK_LOCATION = "images/Yellow block.png";
+const PINK_BLOCK_LOCATION = "images/Pink block.png";
 
 const BLOCK_BORDER_COLOUR = '#000000';
 const GAME_GRID_COLOUR = '#ffffff';
