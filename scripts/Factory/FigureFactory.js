@@ -40,6 +40,18 @@ FigureFactory.prototype.initializeFigure = function (board){
             figure.blocks[3].xCoordinate = 6;
             break;
         }
+        case 4: {
+            figure = new Triangle();
+            figure.blocks[0].yCoordinate = 0;
+            figure.blocks[0].xCoordinate = 5;
+            figure.blocks[1].yCoordinate = 1;
+            figure.blocks[1].xCoordinate = 4;
+            figure.blocks[2].yCoordinate = 1;
+            figure.blocks[2].xCoordinate = 5;
+            figure.blocks[3].yCoordinate = 1;
+            figure.blocks[3].xCoordinate = 6;
+            break;
+        }
     }
 
     board.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];

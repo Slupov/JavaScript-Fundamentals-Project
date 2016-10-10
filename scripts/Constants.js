@@ -21,7 +21,7 @@ const ABILITY_BACKGROUND_COLOUR = 'rgb(68, 68, 68)';
 const ABILITY_FOREGROUND_COLOUR = 'rgba(0, 0, 0, 0.5)';
 const ABILITY_TEXT_COLOUR = '#ffffff';
 
-const MAX_FIGURES = 3;
+const MAX_FIGURES = 7;
 const BLOCK_BORDER_WIDTH = 2;
 const EMPTY_CELL = 0;
 
