@@ -1,6 +1,4 @@
-/**
- * Created by Maria on 10/10/2016.
- */
+
 function JBlock() {
     Figure.call();
     this.blocks = parent.blocks;
@@ -19,9 +17,3 @@ JBlock.prototype = Object.create(Figure.prototype);
 
 JBlock.prototype.constructor = JBlock;
 
-JBlock.prototype.rotate = function(board) {
-    board.matrix[this.blocks[0].yCoordinate][this.blocks[0].xCoordinate] = 0;
-    board.matrix[this.blocks[1].yCoordinate][this.blocks[1].xCoordinate] = 0;
-    board.matrix[this.blocks[2].yCoordinate][this.blocks[2].xCoordinate] = 0;
-    board.matrix[this.blocks[3].yCoordinate][this.blocks[3].xCoordinate] = 0;
-}
