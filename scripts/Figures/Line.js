@@ -75,7 +75,7 @@ Line.prototype.canRotate = function (position, board) {
             }
 
             if(pivotBlockY - pivotBlockNumber + i >= 0 &&
-                board.matrix[pivotBlockY - pivotBlockNumber + i][pivotBlockX] != 0){
+                board.matrix[pivotBlockY - pivotBlockNumber + i][pivotBlockX] != EMPTY_CELL){
                 canRotateInThisPosition = false;
                 break;
             }
@@ -89,7 +89,7 @@ Line.prototype.canRotate = function (position, board) {
             }
 
             if(pivotBlockX - pivotBlockNumber + i >= 0 &&
-                board.matrix[pivotBlockY][pivotBlockX  - pivotBlockNumber + i] != 0){
+                board.matrix[pivotBlockY][pivotBlockX  - pivotBlockNumber + i] != EMPTY_CELL){
                 canRotateInThisPosition = false;
                 break;
             }

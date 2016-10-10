@@ -8,37 +8,9 @@ Board.prototype.initializeBoard = function () {
     for(let row = 0; row < GAME_HEIGHT_BLOCKS; row++) {
         this.matrix[row] = [];
         for(let col = 0; col < GAME_WIDTH_BLOCKS; col++) {
-            this.matrix[row][col] = 0;
+            this.matrix[row][col] = EMPTY_CELL;
         }
     }
-};
-
-Board.prototype.initializeFigure = function() {
-    // let figure = new Square();
-    // figure.blocks[0].yCoordinate = 0;
-    // figure.blocks[0].xCoordinate = 4;
-    // figure.blocks[1].yCoordinate = 0;
-    // figure.blocks[1].xCoordinate = 5;
-    // figure.blocks[2].yCoordinate = 1;
-    // figure.blocks[2].xCoordinate = 4;
-    // figure.blocks[3].yCoordinate = 1;
-    // figure.blocks[3].xCoordinate = 5;
-    let figure = new Triangle();
-    figure.blocks[0].yCoordinate = 0;
-    figure.blocks[0].xCoordinate = 5;
-    figure.blocks[1].yCoordinate = 1;
-    figure.blocks[1].xCoordinate = 4;
-    figure.blocks[2].yCoordinate = 1;
-    figure.blocks[2].xCoordinate = 5;
-    figure.blocks[3].yCoordinate = 1;
-    figure.blocks[3].xCoordinate = 6;
-
-    this.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];
-    this.matrix[figure.blocks[1].yCoordinate][figure.blocks[1].xCoordinate] = figure.blocks[1];
-    this.matrix[figure.blocks[2].yCoordinate][figure.blocks[2].xCoordinate] = figure.blocks[2];
-    this.matrix[figure.blocks[3].yCoordinate][figure.blocks[3].xCoordinate] = figure.blocks[3];
-
-    return figure;
 };
 
 Board.prototype.removeRows = function() {
@@ -50,10 +22,7 @@ Board.prototype.removeRows = function() {
     }
 
     for(let row = 0; row < rowsToRemove.length; row++) {
-        for(let col = 0; col < this.matrix[rowsToRemove[row]].length; col++) {
-            this.matrix[rowsToRemove[row]][col].removeNeighbours();
-            this.matrix[rowsToRemove[row]][col] = 0;
-        }
+        this.removeRow(rowsToRemove[row]);
     }
 
     if(rowsToRemove.length > 0){
@@ -61,9 +30,22 @@ Board.prototype.removeRows = function() {
     }
 };
 
+Board.prototype.removeRow = function(row) {
+    for(let col = 0; col < this.matrix[row].length; col++) {
+        if(this.matrix[row][col] != EMPTY_CELL) {
+            this.removeBlock(row, col);
+        }
+    }
+};
+
+Board.prototype.removeBlock = function(row, col) {
+    this.matrix[row][col].removeNeighbours();
+    this.matrix[row][col] = EMPTY_CELL;
+}
+
 Board.prototype.shouldRemoveRow = function(row) {
     for(let col = 0; col < this.matrix[row].length; col++) {
-        if(this.matrix[row][col] == 0) {
+        if(this.matrix[row][col] == EMPTY_CELL) {
             return false;
         }
     }
@@ -76,7 +58,7 @@ Board.prototype.moveEverythingDown = function() {
 
     for(let row = this.matrix.length - 1; row > 0; row--) {
         for(let col = 0; col < this.matrix[row].length; col++) {
-            if(this.matrix[row][col] == 0 && this.matrix[row - 1][col] != 0 &&
+            if(this.matrix[row][col] == EMPTY_CELL && this.matrix[row - 1][col] != EMPTY_CELL &&
                this.canMoveBlockDown(this.matrix[row - 1][col])) {
                 this.moveBlockDown(this.matrix[row - 1][col], row, col);
                 movedAtLeast1Element = true;
@@ -98,7 +80,7 @@ Board.prototype.canMoveBlockDown = function(block, elementsChecked = []) {
         return false;
     }
 
-    if(this.matrix[block.yCoordinate + 1][block.xCoordinate] != 0){ // there's a block below the current block
+    if(this.matrix[block.yCoordinate + 1][block.xCoordinate] != EMPTY_CELL){ // there's a block below the current block
         for(let i = 0; i < block.neighbours.length; i++) {
             if(block.neighbours[i] == this.matrix[block.yCoordinate + 1][block.xCoordinate]) { // if that block is a neighbour of the current block
                 return true;
@@ -112,6 +94,10 @@ Board.prototype.canMoveBlockDown = function(block, elementsChecked = []) {
     elementsChecked.push(block);
 
     for(let i = 0; i < block.neighbours.length; i++) {
+        if(canMoveCurrentBlockDown == false) {
+            return false;
+        }
+
         if(this.elementCheckedAlready(block.neighbours[i], elementsChecked) == false){
             canMoveCurrentBlockDown = this.canMoveBlockDown(block.neighbours[i], elementsChecked);
         }
@@ -132,9 +118,17 @@ Board.prototype.elementCheckedAlready = function (block, elementsChecked){
 
 Board.prototype.moveBlockDown = function(block, row, col, elementsChecked = []) {
     elementsChecked.push(block);
+    if(this.matrix[row][col] != EMPTY_CELL && this.elementCheckedAlready(this.matrix[row][col], elementsChecked) == false) {
+        this.moveBlockDown(
+            this.matrix[row][col],
+            this.matrix[row][col].yCoordinate + 1,
+            this.matrix[row][col].xCoordinate,
+            elementsChecked);
+    }
+
     this.matrix[row][col] = block;
     block.yCoordinate++;
-    this.matrix[row - 1][col] = 0;
+    this.matrix[row - 1][col] = EMPTY_CELL;
 
     for(let i = 0; i < block.neighbours.length; i++) {
         if(this.elementCheckedAlready(block.neighbours[i], elementsChecked) == false){
