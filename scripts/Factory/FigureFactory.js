@@ -2,6 +2,7 @@ let FigureFactory = function (){};
 
 FigureFactory.prototype.initializeFigure = function (board){
     let figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1); // returns a random number between 1 and max
+    figureNumber = 6;
     let figure = null;
     switch(figureNumber){
         case 1: {
@@ -43,25 +44,25 @@ FigureFactory.prototype.initializeFigure = function (board){
         case 4: {
             figure = new JBlock();
             figure.blocks[0].yCoordinate = 0;
-            figure.blocks[0].xCoordinate = 5;
-            figure.blocks[1].yCoordinate = 1;
+            figure.blocks[0].xCoordinate = 4;
+            figure.blocks[1].yCoordinate = 0;
             figure.blocks[1].xCoordinate = 5;
-            figure.blocks[2].yCoordinate = 2;
-            figure.blocks[2].xCoordinate = 4;
-            figure.blocks[3].yCoordinate = 2;
-            figure.blocks[3].xCoordinate = 5;
+            figure.blocks[2].yCoordinate = 0;
+            figure.blocks[2].xCoordinate = 6;
+            figure.blocks[3].yCoordinate = 1;
+            figure.blocks[3].xCoordinate = 6;
             break;
         }
         case 5: {
             figure = new LBlock();
             figure.blocks[0].yCoordinate = 0;
             figure.blocks[0].xCoordinate = 4;
-            figure.blocks[1].yCoordinate = 1;
-            figure.blocks[1].xCoordinate = 4;
-            figure.blocks[2].yCoordinate = 2;
-            figure.blocks[2].xCoordinate = 4;
-            figure.blocks[3].yCoordinate = 2;
-            figure.blocks[3].xCoordinate = 5;
+            figure.blocks[1].yCoordinate = 0;
+            figure.blocks[1].xCoordinate = 5;
+            figure.blocks[2].yCoordinate = 0;
+            figure.blocks[2].xCoordinate = 6;
+            figure.blocks[3].yCoordinate = 1;
+            figure.blocks[3].xCoordinate = 4;
             break;
         }
         case 6: {
