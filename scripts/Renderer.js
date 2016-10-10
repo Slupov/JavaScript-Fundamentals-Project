@@ -1,14 +1,22 @@
 let Renderer = function() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.buttons = [];
 }
 
-Renderer.prototype.renderGame = function(board) {
+Renderer.prototype.renderGame = function(engine) {
     this.renderBackground();
-    this.renderBoard(board);
+    this.renderBoard(engine.board);
+    this.renderSideMenu(engine.exitGame.bind(engine));
 }
 
+function clearCanvas() {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
 Renderer.prototype.renderBackground = function() {
+    clearCanvas.call(this);
+
     this.ctx.fillStyle = GAME_BACKGROUND_COLOUR;
     this.ctx.fillRect(GAME_STARTING_X - BLOCK_BORDER_WIDTH, GAME_STARTING_Y, GAME_WIDTH + 2 * BLOCK_BORDER_WIDTH, GAME_HEIGHT);
     //this.renderGrid();
@@ -116,4 +124,52 @@ Renderer.prototype.renderAbility = function(ability, colour, startingX, starting
     this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
     let coolDownFactor = 1 - (ability.cooldownTime - ability.cooldownLeft) / (ability.cooldownTime);
     this.ctx.fillRect(startingX, startingY, ABILITY_WIDTH, ABILITY_HEIGHT * coolDownFactor);
+};
+
+Renderer.prototype.renderMenu = function (startGame) {
+    this.ctx.fillStyle = MENU_BACKGROUND_COLOUR;
+    this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    this.ctx.fillStyle = LOGO_COLOUR;
+    this.ctx.font = LOGO_TEXT_FONT;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText("TETRIS", LOGO_X_POSITION, LOGO_Y_POSITION);
+    this.buttons = [];
+    this.buttons.push(this.renderButton(
+        "PLAY",
+        MENU_BUTTON_TEXT_FONT,
+        PLAY_BUTTON_STARTING_X_POSITION,
+        PLAY_BUTTON_STARTING_Y_POSITION,
+        PLAY_BUTTON_SIZE,
+        startGame));
+};
+
+Renderer.prototype.renderButton = function (text, font, xPosition, yPosition, imageSize, onClickEvent){
+    let image = new Image();
+    image.src = BUTTON_LOCATION;
+    image.width *= imageSize;
+    image.height *= imageSize;
+    image.addEventListener('click', onClickEvent);
+    this.ctx.drawImage(image, xPosition, yPosition, image.width, image.height);
+
+    this.ctx.fillStyle = BUTTON_COLOUR;
+    this.ctx.font = font;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText(text, xPosition + image.width / 2, yPosition + image.height / 2);
+
+    let button = { image: image, onClick: onClickEvent, positionX: xPosition, positionY: yPosition};
+    return button;
+};
+
+Renderer.prototype.renderSideMenu = function(exitGame) {
+    this.buttons = [];
+    this.buttons.push(this.renderButton(
+        "MENU",
+        GAME_BUTTON_TEXT_FONT,
+        MENU_BUTTON_STARTING_X_POSITION,
+        MENU_BUTTON_STARTING_Y_POSITION,
+        MENU_BUTTON_SIZE,
+        exitGame));
 };

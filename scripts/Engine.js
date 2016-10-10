@@ -17,19 +17,26 @@ let Engine = function(renderer, board, figureFactory) {
     this.animationTime = 0;
     this.timeForAnimation = 0.5;
     this.lineDestroyer = new LineDestroyer();
-    this.paused = false;
+    this.onMenu = true;
 
     window.addEventListener('keydown', this.handleControls.bind(this));
+    window.addEventListener('click', this.checkButtons.bind(this));
 };
 
 Engine.prototype.main = function(time = 0) {
     this.update(time);
-    this.renderer.renderGame(this.board);
-    if (this.lineDestroyer.abilityPlayingAnimation == true) {
-        this.renderer.renderLineDestroyer(this.board, this.lineDestroyer);
+    if(this.onMenu == false){
+        this.renderer.renderGame(this);
+        if (this.lineDestroyer.abilityPlayingAnimation == true) {
+            this.renderer.renderLineDestroyer(this.board, this.lineDestroyer);
+        }
+
+        this.renderer.renderAbilities(this.lineDestroyer);
+    }
+    else {
+        this.renderer.renderMenu(this.startGame.bind(this));
     }
 
-    this.renderer.renderAbilities(this.lineDestroyer);
     requestAnimationFrame( this.main.bind(this) );
 };
 
@@ -127,5 +134,35 @@ Engine.prototype.initializeFigure = function() {
 };
 
 Engine.prototype.canMove = function() {
-    return this.board.playingAnimation == false && this.lineDestroyer.abilityPlayingAnimation == false && this.paused == false;
+    return this.board.playingAnimation == false &&
+        this.lineDestroyer.abilityPlayingAnimation == false &&
+        this.onMenu == false;
+};
+
+Engine.prototype.checkButtons = function (event) {
+    for(let i = 0; i < this.renderer.buttons.length; i++) {
+        if(this.onButton(event, this.renderer.buttons[i])){
+            this.renderer.buttons[i].onClick();
+            break;
+        }
+    }
+};
+
+Engine.prototype.onButton = function (event, button){
+    if(event.clientX == event.layerX || event.clientY == event.layerY){
+        return false;
+    }
+    if(event.layerX >= button.positionX && event.layerX <= button.positionX + button.image.width &&
+        event.layerY >= button.positionY && event.layerY <= button.positionY + button.image.height){
+        return true;
+    }
+    return false;
+};
+
+Engine.prototype.startGame = function() {
+    this.onMenu = false;
+};
+
+Engine.prototype.exitGame = function() {
+    this.onMenu = true;
 };
