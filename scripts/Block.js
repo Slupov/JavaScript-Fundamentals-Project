@@ -2,6 +2,7 @@ let Block = function(image) {
     this.image = new Image();
     this.image.src = image;
     this.neighbours = [];
+    this.stationary = false;
 };
 
 Block.prototype.removeNeighbours = function() {

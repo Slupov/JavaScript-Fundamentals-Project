@@ -72,6 +72,7 @@ Board.prototype.moveEverythingDown = function() {
         for(let col = 0; col < this.matrix[row].length; col++) {
             if(this.matrix[row][col] == EMPTY_CELL && this.matrix[row - 1][col] != EMPTY_CELL &&
                this.canMoveBlockDown(this.matrix[row - 1][col])) {
+                this.elementsChecked = [];
                 this.moveBlockDown(this.matrix[row - 1][col], row, col);
                 movedAtLeast1Element = true;
             }
@@ -84,18 +85,24 @@ Board.prototype.moveEverythingDown = function() {
 };
 
 Board.prototype.canMoveBlockDown = function(block, elementsChecked = []) {
-    if(block.neighbours.length == 0) {
-        return true;
+    if(block.stationary == true) {
+        return false;
     }
 
     if(block.yCoordinate == this.matrix.length - 1){
         return false;
     }
 
-    if(this.matrix[block.yCoordinate + 1][block.xCoordinate] != EMPTY_CELL){ // there's a block below the current block
+    if(block.neighbours.length == 0) {
+        return true;
+    }
+
+    if(this.matrix[block.yCoordinate + 1][block.xCoordinate] != EMPTY_CELL &&
+        this.elementCheckedAlready(this.matrix[block.yCoordinate + 1][block.xCoordinate], elementsChecked) == false){ // there's a block below the current block that has not been checked
         for(let i = 0; i < block.neighbours.length; i++) {
             if(block.neighbours[i] == this.matrix[block.yCoordinate + 1][block.xCoordinate]) { // if that block is a neighbour of the current block
-                return true;
+                elementsChecked.push(block);
+                return this.canMoveBlockDown(this.matrix[block.yCoordinate + 1][block.xCoordinate], elementsChecked);
             }
         }
 
@@ -128,14 +135,13 @@ Board.prototype.elementCheckedAlready = function (block, elementsChecked){
     return false;
 };
 
-Board.prototype.moveBlockDown = function(block, row, col, elementsChecked = []) {
-    elementsChecked.push(block);
-    if(this.matrix[row][col] != EMPTY_CELL && this.elementCheckedAlready(this.matrix[row][col], elementsChecked) == false) {
+Board.prototype.moveBlockDown = function(block, row, col) {
+    this.elementsChecked.push(block);
+    if(this.matrix[row][col] != EMPTY_CELL && this.elementCheckedAlready(this.matrix[row][col], this.elementsChecked) == false) {
         this.moveBlockDown(
             this.matrix[row][col],
             this.matrix[row][col].yCoordinate + 1,
-            this.matrix[row][col].xCoordinate,
-            elementsChecked);
+            this.matrix[row][col].xCoordinate);
     }
 
     this.matrix[row][col] = block;
@@ -143,12 +149,11 @@ Board.prototype.moveBlockDown = function(block, row, col, elementsChecked = []) 
     this.matrix[row - 1][col] = EMPTY_CELL;
 
     for(let i = 0; i < block.neighbours.length; i++) {
-        if(this.elementCheckedAlready(block.neighbours[i], elementsChecked) == false){
+        if(this.elementCheckedAlready(block.neighbours[i], this.elementsChecked) == false){
             this.moveBlockDown(
                 block.neighbours[i],
                 block.neighbours[i].yCoordinate + 1,
-                block.neighbours[i].xCoordinate,
-                elementsChecked);
+                block.neighbours[i].xCoordinate);
         }
     }
 };

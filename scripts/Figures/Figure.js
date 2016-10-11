@@ -16,14 +16,15 @@ Figure.prototype.setNeighbours = function(block, neighbours) {
 Figure.prototype.canMoveFigureLeft = function(board) {
     let canMoveLeft = true;
     let leftBlocks = [];
-    let smallestX = this.blocks[0].xCoordinate;
-    for(let i = 1; i < this.blocks.length; i++) {
-        if(smallestX > this.blocks[i].xCoordinate) {
-            smallestX = this.blocks[i].xCoordinate;
-        }
-    }
     for(let i = 0; i < this.blocks.length; i++) {
-        if(smallestX == this.blocks[i].xCoordinate) {
+        let hasNeighbourOnTheLeft = false;
+        for(let j = 0; j < this.blocks[i].neighbours.length; j++){
+            if(this.blocks[i].xCoordinate > this.blocks[i].neighbours[j].xCoordinate){
+                hasNeighbourOnTheLeft = true;
+            }
+        }
+
+        if(hasNeighbourOnTheLeft == false){
             leftBlocks.push(this.blocks[i]);
         }
     }
@@ -52,14 +53,15 @@ Figure.prototype.moveFigureLeft = function(board) {
 Figure.prototype.canMoveFigureRight = function(board) {
     let canMoveRight = true;
     let rightBlocks = [];
-    let biggestX = this.blocks[0].xCoordinate;
-    for(let i = 1; i < this.blocks.length; i++) {
-        if(biggestX < this.blocks[i].xCoordinate) {
-            biggestX = this.blocks[i].xCoordinate;
-        }
-    }
     for(let i = 0; i < this.blocks.length; i++) {
-        if(biggestX == this.blocks[i].xCoordinate) {
+        let hasNeighbourOnTheRight = false;
+        for(let j = 0; j < this.blocks[i].neighbours.length; j++){
+            if(this.blocks[i].xCoordinate < this.blocks[i].neighbours[j].xCoordinate){
+                hasNeighbourOnTheRight = true;
+            }
+        }
+
+        if(hasNeighbourOnTheRight == false){
             rightBlocks.push(this.blocks[i]);
         }
     }

@@ -12,6 +12,7 @@ let Game = function (renderer, board, figureFactory) {
     this.lineDestroyer = new LineDestroyer();
     this.score = 0;
     this.highscore = 0;
+    this.playing = false;
 };
 
 Game.prototype.update = function(time) {
@@ -22,36 +23,49 @@ Game.prototype.update = function(time) {
     if(this.lastFrameTime != 0) {
         let timeDifference = time - this.lastFrameTime;
         if(this.canMove()) {
-            this.currentTime += timeDifference;
-            if(this.currentTime / 1000 > this.timeForMove) {
-                this.moveDown();
-            }
-
-            if(this.lineDestroyer.cooldownLeft > 0){
-                this.lineDestroyer.cooldownLeft -= timeDifference / 1000;
-            }
-            else {
-                this.lineDestroyer.cooldownLeft = 0;
-            }
+            this.normalUpdate(timeDifference);
         }
         else if (this.board.playingAnimation == true){
-            this.animationTime += timeDifference;
-            if(this.animationTime / 1000 > this.timeForAnimation) {
-                this.animationTime = 0;
-                this.board.moveEverythingDown();
-            }
+            this.blocksFallingDownAnimation(timeDifference);
         }
         else if (this.lineDestroyer.abilityPlayingAnimation == true){
-            this.lineDestroyer.abilityAnimationTime += timeDifference;
-            if(this.lineDestroyer.abilityAnimationTime / 1000 > this.lineDestroyer.timeForAbilityAnimation) {
-                this.lineDestroyer.abilityAnimationTime = 0;
-                this.lineDestroyer.abilityPlayingAnimation = false;
-                this.lineDestroyer.cooldownLeft = this.lineDestroyer.cooldownTime;
-                this.initializeFigure();
-            }
+            this.lineDestroyerAnimation(timeDifference);
         }
     }
+
     this.lastFrameTime = time;
+};
+
+Game.prototype.normalUpdate = function(timeDifference) {
+    this.currentTime += timeDifference;
+    if(this.currentTime / 1000 > this.timeForMove) {
+        this.moveDown();
+    }
+
+    if(this.lineDestroyer.cooldownLeft > 0){
+        this.lineDestroyer.cooldownLeft -= timeDifference / 1000;
+    }
+    else {
+        this.lineDestroyer.cooldownLeft = 0;
+    }
+};
+
+Game.prototype.blocksFallingDownAnimation = function(timeDifference) {
+    this.animationTime += timeDifference;
+    if(this.animationTime / 1000 > this.timeForAnimation) {
+        this.animationTime = 0;
+        this.board.moveEverythingDown();
+    }
+};
+
+Game.prototype.lineDestroyerAnimation = function(timeDifference) {
+    this.lineDestroyer.abilityAnimationTime += timeDifference;
+    if(this.lineDestroyer.abilityAnimationTime / 1000 > this.lineDestroyer.timeForAbilityAnimation) {
+        this.lineDestroyer.abilityAnimationTime = 0;
+        this.lineDestroyer.abilityPlayingAnimation = false;
+        this.lineDestroyer.cooldownLeft = this.lineDestroyer.cooldownTime;
+        this.initializeFigure();
+    }
 };
 
 Game.prototype.render = function () {
@@ -113,13 +127,30 @@ Game.prototype.rotate = function() {
 };
 
 Game.prototype.initializeFigure = function() {
-    this.currentFigure = this.figureFactory.initializeFigure(this.board);
+    let endGame = {shouldEndGame : false};
+    this.currentFigure = this.figureFactory.initializeFigure(this.board, endGame);
+
+    if(endGame.shouldEndGame) {
+        this.endGame();
+    }
+};
+
+Game.prototype.exitGame = function () {
+    this.engine.exitNormalGame();
+};
+
+Game.prototype.endGame = function () {
+    this.board.initializeBoard();
+    this.initializeFigure();
+    this.score = 0;
+    this.engine.exitNormalGame();
 };
 
 Game.prototype.canMove = function() {
     return this.board.playingAnimation == false &&
         this.lineDestroyer.abilityPlayingAnimation == false &&
-        this.engine.onMenu == false;
+        this.engine.onMenu == false &&
+        this.playing;
 };
 
 Game.prototype.checkButtons = function (event) {

@@ -11,7 +11,7 @@ GameRenderer.prototype.constructor = GameRenderer;
 GameRenderer.prototype.renderGame = function(engine, game) {
     this.renderBackground();
     this.renderBoard(game.board);
-    this.renderSideMenu(game, engine.exitGame.bind(engine));
+    this.renderSideMenu(game, game.exitGame.bind(game));
 };
 
 function clearCanvas() {
@@ -149,7 +149,7 @@ GameRenderer.prototype.renderSideMenu = function(game, exitGame) {
         SCORE_Y_POSITION);
     this.renderScore(
         HIGH_SCORE_LABEL_TEXT,
-        game.score.toString(),
+        game.highscore.toString(),
         HIGH_SCORE_LABEL_X_POSITION,
         HIGH_SCORE_LABEL_Y_POSITION,
         HIGH_SCORE_X_POSITION,
@@ -168,4 +168,4 @@ GameRenderer.prototype.renderScore = function(text, score, xLabelPosition, yLabe
     this.ctx.textBaseline = "middle";
     this.ctx.fillStyle = SCORE_COLOUR;
     this.ctx.fillText(score, xPosition, yPosition);
-}
+};

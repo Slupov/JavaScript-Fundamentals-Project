@@ -1,17 +1,21 @@
 $(document).ready(function () {
     let gameRenderer = new GameRenderer();
     let board = new Board();
+    let challengeBoard = new ChallengeBoard();
     let figureFactory = new FigureFactory();
     let menuRenderer = new MenuRenderer();
     let normalGame = new Game(gameRenderer, board, figureFactory);
-    let engine = new Engine(normalGame, menuRenderer);
+    let challengeGame = new ChallengeGame(gameRenderer, challengeBoard, figureFactory);
+    let engine = new Engine(normalGame, challengeGame, menuRenderer);
     engine.main();
 });
 
-let Engine = function(normalGame, menuRenderer) {
+let Engine = function(normalGame, challengeGame, menuRenderer) {
     this.onMenu = true;
+    this.challengeGame = challengeGame;
     this.normalGame = normalGame;
     this.normalGame.engine = this;
+    this.challengeGame.engine = this;
     this.menuRenderer = menuRenderer;
 
     window.addEventListener('keydown', this.handleControls.bind(this));
@@ -20,29 +24,59 @@ let Engine = function(normalGame, menuRenderer) {
 
 Engine.prototype.main = function(time = 0) {
     this.normalGame.update(time);
+    this.challengeGame.update(time);
     if(this.onMenu == false){
-        this.normalGame.render();
+        if(this.normalGame.playing) {
+            this.normalGame.render();
+        }
+        else if(this.challengeGame.playing) {
+            this.challengeGame.render();
+        }
     }
     else {
-        this.menuRenderer.renderMenu(this.startGame.bind(this));
+        this.menuRenderer.renderMenu(this.startNormalGame.bind(this), this.startChallengeGame.bind(this));
     }
 
     requestAnimationFrame( this.main.bind(this) );
 };
 
 Engine.prototype.handleControls = function(event) {
-    this.normalGame.handleControls(event);
+    if(this.normalGame.playing){
+        this.normalGame.handleControls(event);
+    }
+    else if(this.challengeGame.playing){
+        this.challengeGame.handleControls(event);
+    }
 };
 
 Engine.prototype.checkButtons = function (event) {
-    this.normalGame.checkButtons(event);
-    this.menuRenderer.checkButtons(event);
+    if(this.onMenu){
+        this.menuRenderer.checkButtons(event);
+    }
+    else if(this.normalGame.playing){
+        this.normalGame.checkButtons(event);
+    }
+    else if(this.challengeGame.playing){
+        this.challengeGame.checkButtons(event);
+    }
 };
 
-Engine.prototype.startGame = function() {
+Engine.prototype.startNormalGame = function() {
     this.onMenu = false;
+    this.normalGame.playing = true;
 };
 
-Engine.prototype.exitGame = function() {
+Engine.prototype.exitNormalGame = function() {
     this.onMenu = true;
+    this.normalGame.playing = false;
+};
+
+Engine.prototype.startChallengeGame = function() {
+    this.onMenu = false;
+    this.challengeGame.playing = true;
+};
+
+Engine.prototype.exitChallengeGame = function() {
+    this.onMenu = true;
+    this.challengeGame.playing = true;
 };
