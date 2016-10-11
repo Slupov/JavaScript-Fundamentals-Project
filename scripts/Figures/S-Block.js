@@ -30,13 +30,14 @@ SBlock.prototype.rotate = function(board) {
         this.blocks[3].xCoordinate = this.blocks[3].xCoordinate + 1;
         this.blocks[3].yCoordinate = this.blocks[3].yCoordinate - 1;
 
-        let difference = this.blocks[3].yCoordinate - 3;
+        let difference = this.blocks[1].yCoordinate;
         if(difference < 0) {
             this.blocks[0].yCoordinate = this.blocks[0].yCoordinate - difference;
             this.blocks[1].yCoordinate = this.blocks[1].yCoordinate - difference;
             this.blocks[2].yCoordinate = this.blocks[2].yCoordinate - difference;
             this.blocks[3].yCoordinate = this.blocks[3].yCoordinate - difference;
         }
+
         parent.position = 1;
     }
     //parent.position == 1 checks if the line element is in standing position
@@ -48,7 +49,7 @@ SBlock.prototype.rotate = function(board) {
         this.blocks[3].xCoordinate = this.blocks[3].xCoordinate - 1;
         this.blocks[3].yCoordinate = this.blocks[3].yCoordinate + 1;
 
-        let difference = this.blocks[3].xCoordinate - 3;
+        let difference = this.blocks[2].xCoordinate;
         if(difference < 0) {
             this.blocks[0].xCoordinate = this.blocks[0].xCoordinate - difference;
             this.blocks[1].xCoordinate = this.blocks[1].xCoordinate - difference;
