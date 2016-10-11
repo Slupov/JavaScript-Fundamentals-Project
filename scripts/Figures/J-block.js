@@ -102,7 +102,7 @@ JBlock.prototype.canRotate = function (position, board) {
     let pivotBlockY = this.blocks[pivotBlockNumber].yCoordinate;
     let pivotBlockX = this.blocks[pivotBlockNumber].xCoordinate;
     if(position == 0) {
-        for(let i = 0; i < this.blocks.length; i++) {
+        for(let i = 0; i < this.blocks.length - 1; i++) {
             if(i == pivotBlockNumber) {
                 continue;
             }
@@ -116,7 +116,7 @@ JBlock.prototype.canRotate = function (position, board) {
     }
     //parent.position == 1 checks if the line element is in standing position
     else if(position == 1) {
-        for(let i = 0; i < this.blocks.length; i++) {
+        for(let i = 0; i < this.blocks.length-1; i++) {
             if(i == pivotBlockNumber) {
                 continue;
             }
@@ -128,6 +128,31 @@ JBlock.prototype.canRotate = function (position, board) {
             }
         }
     }
+    else if(position == 2) {
+        for(let i = 0; i < this.blocks.length - 1; i++) {
+            if(i == pivotBlockNumber) {
+                continue;
+            }
 
+            if(pivotBlockY - pivotBlockNumber + i >= 0 &&
+                board.matrix[pivotBlockY - pivotBlockNumber + i][pivotBlockX] != EMPTY_CELL){
+                canRotateInThisPosition = false;
+                break;
+            }
+        }
+    }
+    else if(position == 3) {
+        for(let i = 0; i < this.blocks.length-1; i++) {
+            if(i == pivotBlockNumber) {
+                continue;
+            }
+
+            if(pivotBlockX - pivotBlockNumber + i >= 0 &&
+                board.matrix[pivotBlockY][pivotBlockX  - pivotBlockNumber + i] != EMPTY_CELL){
+                canRotateInThisPosition = false;
+                break;
+            }
+        }
+    }
     return canRotateInThisPosition;
 };
