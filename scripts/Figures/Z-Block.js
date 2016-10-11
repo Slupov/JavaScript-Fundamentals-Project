@@ -32,7 +32,8 @@ ZBlock.prototype.rotate = function(board) {
         this.blocks[3].yCoordinate = this.blocks[3].yCoordinate - 2;
         this.blocks[2].xCoordinate = this.blocks[2].xCoordinate + 1;
         this.blocks[2].yCoordinate = this.blocks[2].yCoordinate - 1;
-        let difference = this.blocks[3].yCoordinate - 3;
+
+        let difference = this.blocks[3].yCoordinate - 1;
         if(difference < 0) {
             this.blocks[0].yCoordinate = this.blocks[0].yCoordinate - difference;
             this.blocks[1].yCoordinate = this.blocks[1].yCoordinate - difference;
