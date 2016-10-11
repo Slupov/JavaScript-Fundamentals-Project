@@ -13,7 +13,7 @@ Board.prototype.initializeBoard = function () {
     }
 };
 
-Board.prototype.removeRows = function() {
+Board.prototype.removeRows = function(updateScore) {
     let rowsToRemove = [];
     for(let row = 0; row < this.matrix.length; row++) {
         if(this.shouldRemoveRow(row)) {
@@ -21,20 +21,32 @@ Board.prototype.removeRows = function() {
         }
     }
 
+    let blocksDestroyed = 0;
     for(let row = 0; row < rowsToRemove.length; row++) {
-        this.removeRow(rowsToRemove[row]);
+        blocksDestroyed += this.removeRow(rowsToRemove[row]);
     }
+
+    updateScore(blocksDestroyed);
 
     if(rowsToRemove.length > 0){
         this.playingAnimation = true;
     }
 };
 
-Board.prototype.removeRow = function(row) {
+Board.prototype.removeRow = function(row, updateScore = null) {
+    let blocksDestroyed = 0;
     for(let col = 0; col < this.matrix[row].length; col++) {
         if(this.matrix[row][col] != EMPTY_CELL) {
             this.removeBlock(row, col);
+            blocksDestroyed++;
         }
+    }
+
+    if(updateScore == null) {
+        return blocksDestroyed;
+    }
+    else {
+        updateScore(blocksDestroyed);
     }
 };
 

@@ -1,20 +1,24 @@
-let Renderer = function() {
+function GameRenderer() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     this.buttons = [];
 }
 
-Renderer.prototype.renderGame = function(engine) {
+GameRenderer.prototype = Object.create(Renderer.prototype);
+
+GameRenderer.prototype.constructor = GameRenderer;
+
+GameRenderer.prototype.renderGame = function(engine, game) {
     this.renderBackground();
-    this.renderBoard(engine.board);
-    this.renderSideMenu(engine.exitGame.bind(engine));
-}
+    this.renderBoard(game.board);
+    this.renderSideMenu(game, engine.exitGame.bind(engine));
+};
 
 function clearCanvas() {
     this.ctx.fillStyle = 'white';
     this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
-Renderer.prototype.renderBackground = function() {
+GameRenderer.prototype.renderBackground = function() {
     clearCanvas.call(this);
 
     this.ctx.fillStyle = GAME_BACKGROUND_COLOUR;
@@ -22,7 +26,7 @@ Renderer.prototype.renderBackground = function() {
     //this.renderGrid();
 };
 
-Renderer.prototype.renderGrid = function () {
+GameRenderer.prototype.renderGrid = function () {
     this.ctx.strokeStyle = GAME_GRID_COLOUR;
     this.ctx.lineWidth="1";
     this.ctx.beginPath();
@@ -38,7 +42,7 @@ Renderer.prototype.renderGrid = function () {
     this.ctx.stroke();
 };
 
-Renderer.prototype.renderBoard = function (board) {
+GameRenderer.prototype.renderBoard = function (board) {
     for(let row = 0; row < board.matrix.length; row++) {
         for(let col = 0; col < board.matrix[row].length; col++) {
             if(board.matrix[row][col] != EMPTY_CELL) {
@@ -52,7 +56,7 @@ Renderer.prototype.renderBoard = function (board) {
     }
 };
 
-Renderer.prototype.renderBlockBorders = function (block, row, col){
+GameRenderer.prototype.renderBlockBorders = function (block, row, col){
     let hasNeighbourOnTheRight = false;
     let hasNeighbourOnTheLeft = false;
     let hasNeighbourBelow = false;
@@ -94,24 +98,24 @@ Renderer.prototype.renderBlockBorders = function (block, row, col){
     this.ctx.stroke();
 };
 
-Renderer.prototype.renderLineDestroyer = function (board, lineDestroyer){
-    let row = Math.floor((lineDestroyer.abilityAnimationTime / 1000) / LINE_DESTROYER_ANIMATION_TIME_FOR_ROW);
-    if(row < board.matrix.length){
-        board.removeRow(row);
-        for(let col = 0; col < board.matrix[row].length; col++) {
+GameRenderer.prototype.renderLineDestroyer = function (game){
+    let row = Math.floor((game.lineDestroyer.abilityAnimationTime / 1000) / LINE_DESTROYER_ANIMATION_TIME_FOR_ROW);
+    if(row < game.board.matrix.length){
+        game.board.removeRow(row, game.updateScore.bind(game));
+        for(let col = 0; col < game.board.matrix[row].length; col++) {
             this.ctx.drawImage(
-                lineDestroyer.image,
+                game.lineDestroyer.image,
                 GAME_STARTING_X + col * GAME_BLOCK_SIZE,
                 GAME_STARTING_Y + row * GAME_BLOCK_SIZE);
         }
     }
 };
 
-Renderer.prototype.renderAbilities = function(lineDestroyer) {
+GameRenderer.prototype.renderAbilities = function(lineDestroyer) {
     this.renderAbility(lineDestroyer, ABILITY_BACKGROUND_COLOUR, FIRST_ABILITY_X_POSITION, FIRST_ABILITY_Y_POSITION);
 };
 
-Renderer.prototype.renderAbility = function(ability, colour, startingX, startingY){
+GameRenderer.prototype.renderAbility = function(ability, colour, startingX, startingY){
     this.ctx.fillStyle = colour;
     this.ctx.fillRect(startingX, startingY, ABILITY_WIDTH, ABILITY_HEIGHT);
 
@@ -126,44 +130,7 @@ Renderer.prototype.renderAbility = function(ability, colour, startingX, starting
     this.ctx.fillRect(startingX, startingY, ABILITY_WIDTH, ABILITY_HEIGHT * coolDownFactor);
 };
 
-Renderer.prototype.renderMenu = function (startGame) {
-    this.ctx.fillStyle = MENU_BACKGROUND_COLOUR;
-    this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    this.ctx.fillStyle = LOGO_COLOUR;
-    this.ctx.font = LOGO_TEXT_FONT;
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillText("TETRIS", LOGO_X_POSITION, LOGO_Y_POSITION);
-    this.buttons = [];
-    this.buttons.push(this.renderButton(
-        "PLAY",
-        MENU_BUTTON_TEXT_FONT,
-        PLAY_BUTTON_STARTING_X_POSITION,
-        PLAY_BUTTON_STARTING_Y_POSITION,
-        PLAY_BUTTON_SIZE,
-        startGame));
-};
-
-Renderer.prototype.renderButton = function (text, font, xPosition, yPosition, imageSize, onClickEvent){
-    let image = new Image();
-    image.src = BUTTON_LOCATION;
-    image.width *= imageSize;
-    image.height *= imageSize;
-    image.addEventListener('click', onClickEvent);
-    this.ctx.drawImage(image, xPosition, yPosition, image.width, image.height);
-
-    this.ctx.fillStyle = BUTTON_COLOUR;
-    this.ctx.font = font;
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillText(text, xPosition + image.width / 2, yPosition + image.height / 2);
-
-    let button = { image: image, onClick: onClickEvent, positionX: xPosition, positionY: yPosition};
-    return button;
-};
-
-Renderer.prototype.renderSideMenu = function(exitGame) {
+GameRenderer.prototype.renderSideMenu = function(game, exitGame) {
     this.buttons = [];
     this.buttons.push(this.renderButton(
         "MENU",
@@ -172,4 +139,33 @@ Renderer.prototype.renderSideMenu = function(exitGame) {
         MENU_BUTTON_STARTING_Y_POSITION,
         MENU_BUTTON_SIZE,
         exitGame));
+
+    this.renderScore(
+        SCORE_LABEL_TEXT,
+        game.score.toString(),
+        SCORE_LABEL_X_POSITION,
+        SCORE_LABEL_Y_POSITION,
+        SCORE_X_POSITION,
+        SCORE_Y_POSITION);
+    this.renderScore(
+        HIGH_SCORE_LABEL_TEXT,
+        game.score.toString(),
+        HIGH_SCORE_LABEL_X_POSITION,
+        HIGH_SCORE_LABEL_Y_POSITION,
+        HIGH_SCORE_X_POSITION,
+        HIGH_SCORE_Y_POSITION);
 };
+
+GameRenderer.prototype.renderScore = function(text, score, xLabelPosition, yLabelPosition, xPosition, yPosition) {
+    this.ctx.font = SCORE_LABEL_FONT;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = SCORE_LABEL_COLOUR;
+    this.ctx.fillText(text, xLabelPosition, yLabelPosition);
+
+    this.ctx.font = SCORE_FONT;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = SCORE_COLOUR;
+    this.ctx.fillText(score, xPosition, yPosition);
+}
