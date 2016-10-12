@@ -5,7 +5,6 @@ let FigureFactory = function (){
 FigureFactory.prototype.initializeFigure = function (board, endGame){
     // returns a random number between 1 and max
     this.figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1);
-    console.log(this.figureNumber + " is the current");
 
     let figure = null;
 
