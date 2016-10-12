@@ -172,9 +172,16 @@ GameRenderer.prototype.renderScore = function (text, score, xLabelPosition, yLab
     this.ctx.fillText(score, xPosition, yPosition);
 };
 
-GameRenderer.prototype.renderNextFigure = function (image) {
-    // this.ctx.fillStyle = ABILITY_BACKGROUND_COLOUR;
-    // this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGTH);
+GameRenderer.prototype.renderNextFigure = function () {
 
-    // this.ctx.drawImage(image,NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGTH);
+    this.ctx.font = ABILITY_TEXT_FONT;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = ABILITY_TEXT_COLOUR;
+    this.ctx.fillText("F", NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION);
+
+    this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
+    this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
+
+    //this.ctx.drawImage(NEXT_FIGURE_IMAGE ,NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
 };
