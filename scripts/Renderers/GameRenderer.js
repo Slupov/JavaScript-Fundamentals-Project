@@ -3,6 +3,7 @@ function GameRenderer() {
     this.ctx = this.canvas.getContext("2d");
     this.buttons = [];
     this.backgroundImage = document.getElementById('background');
+    this.nextFigureImage = document.getElementById('lineImg');
 }
 
 GameRenderer.prototype = Object.create(Renderer.prototype);
@@ -183,5 +184,5 @@ GameRenderer.prototype.renderNextFigure = function () {
     this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
     this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
 
-    //this.ctx.drawImage(NEXT_FIGURE_IMAGE ,NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
+    this.ctx.drawImage(this.nextFigureImage ,NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
 };

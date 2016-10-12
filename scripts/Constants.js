@@ -87,4 +87,3 @@ const NEXT_FIGURE_WIDTH = ABILITY_WIDTH;
 const NEXT_FIGURE_HEIGHT = ABILITY_HEIGHT;
 
 const COOKIE_DATA_SPLITTER = " | ";
-//global variables

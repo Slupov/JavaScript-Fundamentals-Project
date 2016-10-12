@@ -2,6 +2,7 @@ let FigureFactory = function (){};
 
 FigureFactory.prototype.initializeFigure = function (board, endGame){
     let figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1); // returns a random number between 1 and max
+    console.log(figureNumber + " is the current");
 
     let figure = null;
 
@@ -141,3 +142,5 @@ FigureFactory.prototype.createZBlock = function(){
     figure.blocks[3].xCoordinate = 6;
     return figure;
 };
+
+//FigureFactory.prototype.changeNextFigureImage(gameRenderer,newImage){
