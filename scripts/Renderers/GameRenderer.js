@@ -15,6 +15,7 @@ GameRenderer.prototype.renderGame = function (engine, game) {
     this.renderNextFigure(game);
     this.renderBoard(game.board);
     this.renderSideMenu(game, game.exitGame.bind(game));
+    this.renderMuteButton();
 };
 
 function clearCanvas() {
@@ -204,4 +205,14 @@ GameRenderer.prototype.renderNextFigure = function (game) {
     this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
 
     this.ctx.drawImage(this.nextFigureImage ,NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
+};
+
+GameRenderer.prototype.renderMuteButton = function () {
+
+    let image = document.getElementById("muteIcon");
+    let audio = document.getElementById("myAudio");
+
+
+    this.ctx.drawImage(image,MUTE_BUTTON_STARTING_X_POSITION, MUTE_BUTTON_STARTING_Y_POSITION);
+
 };
