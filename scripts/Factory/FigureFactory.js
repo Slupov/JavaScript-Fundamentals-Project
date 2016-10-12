@@ -47,10 +47,10 @@ FigureFactory.prototype.initializeFigure = function (board, endGame){
         endGame.shouldEndGame = true;
     }
     //spawn the figure
-    board.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];
-    board.matrix[figure.blocks[1].yCoordinate][figure.blocks[1].xCoordinate] = figure.blocks[1];
-    board.matrix[figure.blocks[2].yCoordinate][figure.blocks[2].xCoordinate] = figure.blocks[2];
-    board.matrix[figure.blocks[3].yCoordinate][figure.blocks[3].xCoordinate] = figure.blocks[3];
+    //     board.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];
+    //     board.matrix[figure.blocks[1].yCoordinate][figure.blocks[1].xCoordinate] = figure.blocks[1];
+    //     board.matrix[figure.blocks[2].yCoordinate][figure.blocks[2].xCoordinate] = figure.blocks[2];
+    //     board.matrix[figure.blocks[3].yCoordinate][figure.blocks[3].xCoordinate] = figure.blocks[3];
 
     return figure;
 };
@@ -146,4 +146,3 @@ FigureFactory.prototype.createZBlock = function(){
     return figure;
 };
 
-//FigureFactory.prototype.changeNextFigureImage(gameRenderer,newImage){

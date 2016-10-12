@@ -11,6 +11,8 @@ function Square() {
     this.setNeighbours(this.blocks[1], [0, 3]);
     this.setNeighbours(this.blocks[2], [0, 3]);
     this.setNeighbours(this.blocks[3], [1,2]);
+    this.figureType = "Square";
+
 }
 Square.prototype = Object.create(Figure.prototype);
 

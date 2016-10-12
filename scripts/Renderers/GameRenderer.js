@@ -12,7 +12,7 @@ GameRenderer.prototype.constructor = GameRenderer;
 
 GameRenderer.prototype.renderGame = function (engine, game) {
     this.renderBackground();
-    this.renderNextFigure();
+    this.renderNextFigure(game);
     this.renderBoard(game.board);
     this.renderSideMenu(game, game.exitGame.bind(game));
 };
@@ -173,7 +173,32 @@ GameRenderer.prototype.renderScore = function (text, score, xLabelPosition, yLab
     this.ctx.fillText(score, xPosition, yPosition);
 };
 
-GameRenderer.prototype.renderNextFigure = function () {
+GameRenderer.prototype.renderNextFigure = function (game) {
+
+    switch (game.nextFigure.figureType){
+        case "Square" :
+            this.nextFigureImage = document.getElementById("squareImg");
+            break;
+        case "Jblock":
+            this.nextFigureImage = document.getElementById("jImg");
+            break;
+        case "Line" :
+            this.nextFigureImage = document.getElementById("lineImg");
+            break;
+        case "Triangle":
+            this.nextFigureImage = document.getElementById("triangleImg");
+            break;
+        case "Lblock" :
+            this.nextFigureImage = document.getElementById("lImg");
+            break;
+        case "Sblock":
+            this.nextFigureImage = document.getElementById("sImg");
+            break;
+        case "Zblock":
+            this.nextFigureImage = document.getElementById("zImg");
+            break;
+
+    }
 
     this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
     this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);

@@ -11,6 +11,8 @@ function Triangle() {
     this.setNeighbours(this.blocks[1], [2]);
     this.setNeighbours(this.blocks[2], [0, 1, 3]);
     this.setNeighbours(this.blocks[3], [2]);
+    this.figureType = "Triangle";
+
 }
 Triangle.prototype = Object.create(Figure.prototype);
 

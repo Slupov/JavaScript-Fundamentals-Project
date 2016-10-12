@@ -11,6 +11,8 @@ function SBlock() {
     this.setNeighbours(this.blocks[1], [0]);
     this.setNeighbours(this.blocks[2], [3]);
     this.setNeighbours(this.blocks[3], [0,2]);
+    this.figureType = "Sblock";
+
 }
 SBlock.prototype = Object.create(Figure.prototype);
 

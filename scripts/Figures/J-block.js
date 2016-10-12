@@ -12,6 +12,7 @@ function JBlock() {
     this.setNeighbours(this.blocks[1], [0, 2]);
     this.setNeighbours(this.blocks[2], [1,3]);
     this.setNeighbours(this.blocks[3], [2]);
+    this.figureType = "Jblock";
 }
 JBlock.prototype = Object.create(Figure.prototype);
 

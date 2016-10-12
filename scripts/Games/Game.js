@@ -15,7 +15,6 @@ let Game = function (renderer, board, figureFactory) {
     this.highscore = 0;
     this.playing = false;
     this.saveData = null;
-    this.isNextFigure = false;
 
 };
 
@@ -137,18 +136,29 @@ Game.prototype.initializeFigure = function () {
 
     if (this.nextFigure == null) {
         this.currentFigure = this.figureFactory.initializeFigure(this.board, endGame);
-
         //if the current figure reached its last move
         //initialize the nextFigure
+        this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
 
-        if (!(this.currentFigure.canMoveFigureDown(this.board))) {
-            this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
-        }
+        this.board.matrix[this.currentFigure.blocks[0].yCoordinate][this.currentFigure.blocks[0].xCoordinate] = this.currentFigure.blocks[0];
+        this.board.matrix[this.currentFigure.blocks[1].yCoordinate][this.currentFigure.blocks[1].xCoordinate] = this.currentFigure.blocks[1];
+        this.board.matrix[this.currentFigure.blocks[2].yCoordinate][this.currentFigure.blocks[2].xCoordinate] = this.currentFigure.blocks[2];
+        this.board.matrix[this.currentFigure.blocks[3].yCoordinate][this.currentFigure.blocks[3].xCoordinate] = this.currentFigure.blocks[3];
+
     }
     // if there is already a next figure
     else {
         this.currentFigure = this.nextFigure;
-        if (!(this.currentFigure.canMoveFigureDown(this.board))){
+        //update the next figure
+        this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
+        //spawn the next figure
+        //if (!(this.currentFigure.canMoveFigureDown(this.board)))
+        this.board.matrix[this.currentFigure.blocks[0].yCoordinate][this.currentFigure.blocks[0].xCoordinate] = this.currentFigure.blocks[0];
+        this.board.matrix[this.currentFigure.blocks[1].yCoordinate][this.currentFigure.blocks[1].xCoordinate] = this.currentFigure.blocks[1];
+        this.board.matrix[this.currentFigure.blocks[2].yCoordinate][this.currentFigure.blocks[2].xCoordinate] = this.currentFigure.blocks[2];
+        this.board.matrix[this.currentFigure.blocks[3].yCoordinate][this.currentFigure.blocks[3].xCoordinate] = this.currentFigure.blocks[3];
+
+        if (!(this.currentFigure.canMoveFigureDown(this.board))) {
             this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
         }
     }

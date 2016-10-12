@@ -14,6 +14,8 @@ function LBlock() {
     this.setNeighbours(this.blocks[1], [0, 2]);
     this.setNeighbours(this.blocks[2], [1]);
     this.setNeighbours(this.blocks[3], [0]);
+    this.figureType = "Lblock";
+
 }
 LBlock.prototype = Object.create(Figure.prototype);
 
