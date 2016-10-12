@@ -85,10 +85,6 @@ Board.prototype.moveEverythingDown = function() {
 };
 
 Board.prototype.canMoveBlockDown = function(block, elementsChecked = []) {
-    if(block.stationary == true) {
-        return false;
-    }
-
     if(block.yCoordinate == this.matrix.length - 1){
         return false;
     }

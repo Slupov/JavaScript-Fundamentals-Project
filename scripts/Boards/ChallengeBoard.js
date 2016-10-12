@@ -3,6 +3,7 @@ function ChallengeBoard() {
     this.playingMoveUpAnimation = false;
     this.score = null;
     this.initializeBoard();
+
 }
 
 ChallengeBoard.prototype = Object.create(Board.prototype);
@@ -24,6 +25,21 @@ ChallengeBoard.prototype.initializeBoard = function () {
 };
 
 ChallengeBoard.prototype.generateChallengeRow = function (row) {
+    let numberOfStationaryBlocks = this.getNumberOfStationaryBlocks(row);
+
+    let generatedStationaryBlocks = 0;
+    while(generatedStationaryBlocks < numberOfStationaryBlocks) {
+        let randomIndex = Math.floor(Math.random() * this.matrix[row].length);
+        if(this.matrix[row][randomIndex] == EMPTY_CELL){
+            this.matrix[row][randomIndex] = new Block(STATIONARY_BLOCK_LOCATION);
+            this.matrix[row][randomIndex].stationary = true;
+            this.matrix[row][randomIndex].yCoordinate = row;
+            generatedStationaryBlocks++;
+        }
+    }
+};
+
+ChallengeBoard.prototype.getNumberOfStationaryBlocks = function (){
     let numberOfStationaryBlocks = 1;
     if(this.score){
         let currentScore = this.score();
@@ -33,15 +49,7 @@ ChallengeBoard.prototype.generateChallengeRow = function (row) {
         }
     }
 
-    let generatedStationaryBlocks = 0;
-    while(generatedStationaryBlocks < numberOfStationaryBlocks) {
-        let randomIndex = Math.floor(Math.random() * this.matrix[row].length);
-        if(this.matrix[row][randomIndex] == EMPTY_CELL){
-            this.matrix[row][randomIndex] = new Block(STATIONARY_BLOCK_LOCATION);
-            this.matrix[row][randomIndex].stationary = true;
-            generatedStationaryBlocks++;
-        }
-    }
+    return numberOfStationaryBlocks;
 };
 
 ChallengeBoard.prototype.moveEverythingDown = function() {
@@ -51,6 +59,9 @@ ChallengeBoard.prototype.moveEverythingDown = function() {
         for(let col = 0; col < this.matrix[row].length; col++) {
             if(this.matrix[row][col] == EMPTY_CELL && this.matrix[row - 1][col] != EMPTY_CELL &&
                 this.canMoveBlockDown(this.matrix[row - 1][col])) {
+                if(this.matrix[row - 1][col].stationary){
+                    this.stationaryBlocksMovedDown++;
+                }
                 this.elementsChecked = [];
                 this.moveBlockDown(this.matrix[row - 1][col], row, col);
                 movedAtLeast1Element = true;
@@ -59,6 +70,7 @@ ChallengeBoard.prototype.moveEverythingDown = function() {
     }
 
     if(movedAtLeast1Element == false) {
+        this.stationaryBlocksMovedDown = 0;
         this.playingAnimation = false;
 
         let numberOfChallengeRowsLeft = this.challengeRows();
@@ -67,6 +79,62 @@ ChallengeBoard.prototype.moveEverythingDown = function() {
             this.playingMoveUpAnimation = true;
         }
     }
+};
+
+ChallengeBoard.prototype.canMoveBlockDown = function(block, elementsChecked = []) {
+    if(block.stationary == true) {
+        let numberOfChallengeBlocksLeft = this.challengeBlocksOnRow(block.yCoordinate + 1);
+
+        if(numberOfChallengeBlocksLeft >= this.getNumberOfStationaryBlocks()){
+            return false;
+        }
+    }
+
+    if(block.yCoordinate == this.matrix.length - 1){
+        return false;
+    }
+
+    if(block.neighbours.length == 0) {
+        return true;
+    }
+
+    if(this.matrix[block.yCoordinate + 1][block.xCoordinate] != EMPTY_CELL &&
+        this.elementCheckedAlready(this.matrix[block.yCoordinate + 1][block.xCoordinate], elementsChecked) == false){ // there's a block below the current block that has not been checked
+        for(let i = 0; i < block.neighbours.length; i++) {
+            if(block.neighbours[i] == this.matrix[block.yCoordinate + 1][block.xCoordinate]) { // if that block is a neighbour of the current block
+                elementsChecked.push(block);
+                return this.canMoveBlockDown(this.matrix[block.yCoordinate + 1][block.xCoordinate], elementsChecked);
+            }
+        }
+
+        return false;
+    }
+
+    let canMoveCurrentBlockDown = true;
+    elementsChecked.push(block);
+
+    for(let i = 0; i < block.neighbours.length; i++) {
+        if(canMoveCurrentBlockDown == false) {
+            return false;
+        }
+
+        if(this.elementCheckedAlready(block.neighbours[i], elementsChecked) == false){
+            canMoveCurrentBlockDown = this.canMoveBlockDown(block.neighbours[i], elementsChecked);
+        }
+    }
+
+    return canMoveCurrentBlockDown;
+};
+
+ChallengeBoard.prototype.challengeBlocksOnRow = function (row) {
+    let numberOfChallengeBlocksOnRow = 0;
+    for(let col = 0; col < this.matrix[row].length; col++){
+        if(this.matrix[row][col] != EMPTY_CELL && this.matrix[row][col].stationary == true) {
+            numberOfChallengeBlocksOnRow++;
+        }
+    }
+
+    return numberOfChallengeBlocksOnRow;
 };
 
 ChallengeBoard.prototype.moveEverythingUp = function (){
