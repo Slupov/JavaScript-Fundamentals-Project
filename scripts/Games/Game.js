@@ -13,6 +13,7 @@ let Game = function (renderer, board, figureFactory) {
     this.score = 0;
     this.highscore = 0;
     this.playing = false;
+    this.saveData = null;
 };
 
 Game.prototype.update = function(time) {
@@ -162,5 +163,16 @@ Game.prototype.updateScore = function(blocks) {
     this.score += blocks * scoreFactor;
     if(this.highscore < this.score){
         this.highscore = this.score;
+        this.saveData();
     }
+};
+
+Game.prototype.setGameData = function (data) {
+    if(data){
+        this.highscore = Number(data);
+    }
+};
+
+Game.prototype.getGameData = function () {
+    return this.highscore;
 };

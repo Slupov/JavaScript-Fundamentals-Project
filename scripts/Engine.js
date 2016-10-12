@@ -16,6 +16,9 @@ let Engine = function(normalGame, challengeGame, menuRenderer) {
     this.normalGame = normalGame;
     this.normalGame.engine = this;
     this.challengeGame.engine = this;
+    this.normalGame.saveData = this.saveData.bind(this);
+    this.challengeGame.saveData = this.saveData.bind(this);
+    this.readData();
     this.menuRenderer = menuRenderer;
 
     window.addEventListener('keydown', this.handleControls.bind(this));
@@ -79,4 +82,16 @@ Engine.prototype.startChallengeGame = function() {
 Engine.prototype.exitChallengeGame = function() {
     this.onMenu = true;
     this.challengeGame.playing = true;
+};
+
+Engine.prototype.readData = function () {
+    if(document.cookie){
+        let data = document.cookie.split(COOKIE_DATA_SPLITTER);
+        this.normalGame.setGameData(data[0]);
+        this.challengeGame.setGameData(data[1]);
+    }
+};
+
+Engine.prototype.saveData = function () {
+    document.cookie = this.normalGame.getGameData() + COOKIE_DATA_SPLITTER + this.challengeGame.getGameData();
 };

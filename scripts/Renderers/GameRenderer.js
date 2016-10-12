@@ -114,10 +114,10 @@ GameRenderer.prototype.renderLineDestroyer = function (game) {
 };
 
 GameRenderer.prototype.renderAbilities = function (lineDestroyer) {
-    this.renderAbility(lineDestroyer, ABILITY_BACKGROUND_COLOUR, FIRST_ABILITY_X_POSITION, FIRST_ABILITY_Y_POSITION);
+    this.renderAbility(LINE_DESTROYER_ABILITY_TEXT, lineDestroyer, ABILITY_BACKGROUND_COLOUR, FIRST_ABILITY_X_POSITION, FIRST_ABILITY_Y_POSITION);
 };
 
-GameRenderer.prototype.renderAbility = function (ability, colour, startingX, startingY) {
+GameRenderer.prototype.renderAbility = function (abilityText, ability, colour, startingX, startingY) {
     this.ctx.fillStyle = colour;
     this.ctx.fillRect(startingX, startingY, ABILITY_WIDTH, ABILITY_HEIGHT);
 
@@ -125,7 +125,7 @@ GameRenderer.prototype.renderAbility = function (ability, colour, startingX, sta
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillStyle = ABILITY_TEXT_COLOUR;
-    this.ctx.fillText("AB", ABILITY_TEXT_X_POSITION, ABILITY_TEXT_Y_POSITION);
+    this.ctx.fillText(abilityText, ABILITY_TEXT_X_POSITION, ABILITY_TEXT_Y_POSITION);
 
     this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
     let coolDownFactor = 1 - (ability.cooldownTime - ability.cooldownLeft) / (ability.cooldownTime);
