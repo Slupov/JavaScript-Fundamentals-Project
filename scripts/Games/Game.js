@@ -78,6 +78,8 @@ Game.prototype.render = function () {
     }
 
     this.renderer.renderAbilities(this.lineDestroyer);
+    var audio = document.getElementById("myAudio");
+    audio.play();
 };
 
 Game.prototype.handleControls = function (event) {
