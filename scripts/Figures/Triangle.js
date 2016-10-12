@@ -80,12 +80,12 @@ Triangle.prototype.rotate = function (board) {
         this.blocks[1].yCoordinate = this.blocks[1].yCoordinate - 1;
         this.blocks[3].xCoordinate = this.blocks[3].xCoordinate + 1;
         this.blocks[3].yCoordinate = this.blocks[3].yCoordinate + 1;
-        let difference = this.blocks[3].xCoordinate - 3;
+        let difference = GAME_WIDTH_BLOCKS - 1 - this.blocks[3].xCoordinate;
         if (difference < 0) {
-            this.blocks[0].xCoordinate = this.blocks[0].xCoordinate - difference;
-            this.blocks[1].xCoordinate = this.blocks[1].xCoordinate - difference;
-            this.blocks[2].xCoordinate = this.blocks[2].xCoordinate - difference;
-            this.blocks[3].xCoordinate = this.blocks[3].xCoordinate - difference;
+            this.blocks[0].xCoordinate = this.blocks[0].xCoordinate + difference;
+            this.blocks[1].xCoordinate = this.blocks[1].xCoordinate + difference;
+            this.blocks[2].xCoordinate = this.blocks[2].xCoordinate + difference;
+            this.blocks[3].xCoordinate = this.blocks[3].xCoordinate + difference;
         }
         parent.position = 0;
     }
