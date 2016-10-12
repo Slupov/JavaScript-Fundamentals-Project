@@ -1,12 +1,15 @@
-let FigureFactory = function (){};
+let FigureFactory = function (){
+    this.figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1);
+};
 
 FigureFactory.prototype.initializeFigure = function (board, endGame){
-    let figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1); // returns a random number between 1 and max
-    console.log(figureNumber + " is the current");
+    // returns a random number between 1 and max
+    this.figureNumber = Math.floor((Math.random() * MAX_FIGURES) + 1);
+    console.log(this.figureNumber + " is the current");
 
     let figure = null;
 
-    switch(figureNumber){
+    switch(this.figureNumber){
         case 1: {
             figure = this.createLine();
             break;
@@ -43,7 +46,7 @@ FigureFactory.prototype.initializeFigure = function (board, endGame){
         board.matrix[figure.blocks[3].yCoordinate][figure.blocks[3].xCoordinate] != EMPTY_CELL) {
         endGame.shouldEndGame = true;
     }
-
+    //spawn the figure
     board.matrix[figure.blocks[0].yCoordinate][figure.blocks[0].xCoordinate] = figure.blocks[0];
     board.matrix[figure.blocks[1].yCoordinate][figure.blocks[1].xCoordinate] = figure.blocks[1];
     board.matrix[figure.blocks[2].yCoordinate][figure.blocks[2].xCoordinate] = figure.blocks[2];

@@ -175,12 +175,6 @@ GameRenderer.prototype.renderScore = function (text, score, xLabelPosition, yLab
 
 GameRenderer.prototype.renderNextFigure = function () {
 
-    this.ctx.font = ABILITY_TEXT_FONT;
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = ABILITY_TEXT_COLOUR;
-    this.ctx.fillText("F", NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION);
-
     this.ctx.fillStyle = ABILITY_FOREGROUND_COLOUR;
     this.ctx.fillRect(NEXT_FIGURE_STARTING_X_POSITION, NEXT_FIGURE_STARTING_Y_POSITION, NEXT_FIGURE_WIDTH, NEXT_FIGURE_HEIGHT);
 
