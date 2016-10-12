@@ -24,12 +24,18 @@ ChallengeGame.prototype.constructor = ChallengeGame;
 
 ChallengeGame.prototype.exitGame = function () {
     this.engine.exitNormalGame();
+    let audio=document.getElementById("myAudio");
+    audio.pause();
+    audio.currentTime=0;
 };
 
 ChallengeGame.prototype.endGame = function () {
     this.board.initializeBoard();
     this.initializeFigure();
     this.score = 0;
+    let audio=document.getElementById("myAudio");
+    audio.pause();
+    audio.currentTime=0;
     this.engine.exitChallengeGame();
 };
 

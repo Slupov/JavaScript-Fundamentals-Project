@@ -79,6 +79,7 @@ Game.prototype.render = function () {
 
     this.renderer.renderAbilities(this.lineDestroyer);
     var audio = document.getElementById("myAudio");
+    document.getElementById("myAudio").loop=true;
     audio.play();
 };
 
@@ -172,6 +173,9 @@ Game.prototype.initializeFigure = function () {
 
 Game.prototype.exitGame = function () {
     this.engine.exitNormalGame();
+    let audio=document.getElementById("myAudio");
+    audio.pause();
+    audio.currentTime=0;
 };
 
 Game.prototype.endGame = function () {
@@ -179,6 +183,9 @@ Game.prototype.endGame = function () {
     this.initializeFigure();
     this.score = 0;
     this.engine.exitNormalGame();
+    let audio=document.getElementById("myAudio");
+    audio.pause();
+    audio.currentTime=0;
 };
 
 Game.prototype.canMove = function () {
