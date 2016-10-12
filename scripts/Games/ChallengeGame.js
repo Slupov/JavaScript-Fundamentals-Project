@@ -2,7 +2,7 @@ function ChallengeGame(renderer, board, figureFactory){
     this.engine = null;
     this.renderer = renderer;
     this.board = board;
-    this.board.score = this.getScore();
+    this.board.score = this.getScore.bind(this);
     this.figureFactory = figureFactory;
     this.currentFigure = null;
     this.timeForMove = 1;
