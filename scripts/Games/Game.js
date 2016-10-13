@@ -98,6 +98,13 @@ Game.prototype.handleControls = function (event) {
         else if (event.code == "Digit1") {
             this.lineDestroyer.useAbility(this.currentFigure, this.board);
         }
+        else if (event.code == "Digit2") {
+            this.updateScore(40);
+        }
+        else if (event.code == "Digit3") {
+            this.board.initializeBoard();
+            this.initializeFigure();
+        }
     }
 };
 
