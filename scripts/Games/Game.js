@@ -139,7 +139,7 @@ Game.prototype.initializeFigure = function () {
         this.currentFigure = this.figureFactory.initializeFigure(this.board, endGame);
         //if the current figure reached its last move
         //initialize the nextFigure
-        this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
+        this.initializeNextFigure(endGame);
 
         this.board.matrix[this.currentFigure.blocks[0].yCoordinate][this.currentFigure.blocks[0].xCoordinate] = this.currentFigure.blocks[0];
         this.board.matrix[this.currentFigure.blocks[1].yCoordinate][this.currentFigure.blocks[1].xCoordinate] = this.currentFigure.blocks[1];
@@ -151,8 +151,8 @@ Game.prototype.initializeFigure = function () {
     else {
         this.currentFigure = this.nextFigure;
         //update the next figure
-        this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
         //spawn the next figure
+        this.initializeNextFigure(endGame);
         //if (!(this.currentFigure.canMoveFigureDown(this.board)))
         this.board.matrix[this.currentFigure.blocks[0].yCoordinate][this.currentFigure.blocks[0].xCoordinate] = this.currentFigure.blocks[0];
         this.board.matrix[this.currentFigure.blocks[1].yCoordinate][this.currentFigure.blocks[1].xCoordinate] = this.currentFigure.blocks[1];
@@ -167,6 +167,13 @@ Game.prototype.initializeFigure = function () {
     if (endGame.shouldEndGame) {
         this.endGame();
     }
+};
+
+Game.prototype.initializeNextFigure = function (endGame) {
+    do{
+        this.nextFigure = this.figureFactory.initializeFigure(this.board, endGame);
+    }
+    while(this.nextFigure.blocks[0].image.src == this.currentFigure.blocks[0].image.src);
 };
 
 Game.prototype.exitGame = function () {
