@@ -19,6 +19,8 @@ const YELLOW_BLOCK_LOCATION = "images/Yellow block.png";
 const PINK_BLOCK_LOCATION = "images/Pink block.png";
 const STATIONARY_BLOCK_LOCATION = "images/Gray block.png";
 const BUTTON_LOCATION = "images/Button.png";
+const MUTE_BUTTON_LOCATION = "images/muteIcon.png";
+const UN_MUTE_BUTTON_LOCATION = "images/unMuteIcon.png";
 
 const MENU_BACKGROUND_COLOUR = '#222222';
 const LOGO_COLOUR = '#dddddd';

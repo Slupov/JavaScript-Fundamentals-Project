@@ -16,6 +16,8 @@ function ChallengeGame(renderer, board, figureFactory){
     this.score = 0;
     this.highscore = 0;
     this.playing = false;
+    this.playingAudio = null;
+    this.setPlayingAudio = null;
 }
 
 ChallengeGame.prototype = Object.create(Game.prototype);

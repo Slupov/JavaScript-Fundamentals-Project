@@ -15,7 +15,8 @@ let Game = function (renderer, board, figureFactory) {
     this.highscore = 0;
     this.playing = false;
     this.saveData = null;
-
+    this.playingAudio = null;
+    this.setPlayingAudio = null;
 };
 
 Game.prototype.update = function (time) {
@@ -78,9 +79,6 @@ Game.prototype.render = function () {
     }
 
     this.renderer.renderAbilities(this.lineDestroyer);
-    var audio = document.getElementById("myAudio");
-    document.getElementById("myAudio").loop=true;
-    audio.play();
 };
 
 Game.prototype.handleControls = function (event) {
@@ -173,9 +171,10 @@ Game.prototype.initializeFigure = function () {
 
 Game.prototype.exitGame = function () {
     this.engine.exitNormalGame();
-    let audio=document.getElementById("myAudio");
-    audio.pause();
-    audio.currentTime=0;
+    if(this.playingAudio()){
+        this.stopAudio();
+        this.setPlayingAudio(true);
+    }
 };
 
 Game.prototype.endGame = function () {
@@ -183,9 +182,10 @@ Game.prototype.endGame = function () {
     this.initializeFigure();
     this.score = 0;
     this.engine.exitNormalGame();
-    let audio=document.getElementById("myAudio");
-    audio.pause();
-    audio.currentTime=0;
+    if(this.playingAudio()){
+        this.stopAudio();
+        this.setPlayingAudio(true);
+    }
 };
 
 Game.prototype.canMove = function () {
@@ -216,4 +216,23 @@ Game.prototype.setGameData = function (data) {
 
 Game.prototype.getGameData = function () {
     return this.highscore;
+};
+
+Game.prototype.playAudio = function () {
+    this.setPlayingAudio(true);
+    let image = document.getElementById("muteIcon");
+    image.src = MUTE_BUTTON_LOCATION;
+    let audio = document.getElementById("myAudio");
+    document.getElementById("myAudio").loop = true;
+    audio.play();
+};
+
+Game.prototype.stopAudio = function () {
+    this.setPlayingAudio(false);
+    let image = document.getElementById("muteIcon");
+    image.src = UN_MUTE_BUTTON_LOCATION;
+    let audio = document.getElementById("myAudio");
+    document.getElementById("myAudio").loop = false;
+    audio.pause();
+    audio.currentTime = 0;
 };

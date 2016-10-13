@@ -18,7 +18,7 @@ Renderer.prototype.renderButton = function (text, font, xPosition, yPosition, im
     this.ctx.textBaseline = "middle";
     this.ctx.fillText(text, xPosition + image.width / 2, yPosition + image.height / 2);
 
-    let button = new Button(image, onClickEvent, xPosition, yPosition)
+    let button = new Button(image, onClickEvent, xPosition, yPosition);
     return button;
 };
 

@@ -18,8 +18,13 @@ let Engine = function(normalGame, challengeGame, menuRenderer) {
     this.challengeGame.engine = this;
     this.normalGame.saveData = this.saveData.bind(this);
     this.challengeGame.saveData = this.saveData.bind(this);
+    this.normalGame.playingAudio = this.isAudioPlaying.bind(this);
+    this.challengeGame.playingAudio = this.isAudioPlaying.bind(this);
+    this.normalGame.setPlayingAudio = this.setIsAudioPlaying.bind(this);
+    this.challengeGame.setPlayingAudio = this.setIsAudioPlaying.bind(this);
     this.readData();
     this.menuRenderer = menuRenderer;
+    this.playingAudio = false;
 
     window.addEventListener('keydown', this.handleControls.bind(this));
     window.addEventListener('click', this.checkButtons.bind(this));
@@ -67,6 +72,9 @@ Engine.prototype.checkButtons = function (event) {
 Engine.prototype.startNormalGame = function() {
     this.onMenu = false;
     this.normalGame.playing = true;
+    if(this.playingAudio) {
+        this.normalGame.playAudio();
+    }
 };
 
 Engine.prototype.exitNormalGame = function() {
@@ -77,6 +85,9 @@ Engine.prototype.exitNormalGame = function() {
 Engine.prototype.startChallengeGame = function() {
     this.onMenu = false;
     this.challengeGame.playing = true;
+    if(this.playingAudio) {
+        this.challengeGame.playAudio();
+    }
 };
 
 Engine.prototype.exitChallengeGame = function() {
@@ -94,4 +105,12 @@ Engine.prototype.readData = function () {
 
 Engine.prototype.saveData = function () {
     document.cookie = this.normalGame.getGameData() + COOKIE_DATA_SPLITTER + this.challengeGame.getGameData();
+};
+
+Engine.prototype.isAudioPlaying = function (){
+    return this.playingAudio;
+};
+
+Engine.prototype.setIsAudioPlaying = function (playingAudio){
+    this.playingAudio = playingAudio;
 };

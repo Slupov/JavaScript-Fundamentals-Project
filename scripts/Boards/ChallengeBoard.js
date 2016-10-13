@@ -151,6 +151,8 @@ ChallengeBoard.prototype.moveEverythingUp = function (){
 
     if(numberOfChallengeRowsLeft >= this.challengeRowsNumber()){
         this.playingMoveUpAnimation = false;
+        this.playingAnimation = true;
+        this.moveEverythingDown();
     }
 
 };
